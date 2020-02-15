@@ -28,8 +28,8 @@ for i in sub_page_links_list:
     if i != "javascript:void();":
         sub_page_links_list_clean.append(i)
 
-print(len(sub_page_links_list))
-print(len(sub_page_links_list_clean))
+for x in sub_page_links_list_clean:
+    print(x)
 
 '''
 # Extracting all the <a> tags into a list.
