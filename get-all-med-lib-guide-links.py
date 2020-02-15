@@ -1,3 +1,5 @@
+# this file collects all of the libguide links from the medical library guide page
+
 # install appropriate packages
 from bs4 import BeautifulSoup
 import requests
@@ -21,7 +23,10 @@ for tag in tags:
     links = tag.get('href')
     all_libguide_urls.append(links)
 
-
 # Remove the last url from the all-urls list because it is a link to a list of all Yale libguides
+all_libguide_urls.pop()
+
+for libguide_url in all_libguide_urls:
+    print(libguide_url)
 
 
