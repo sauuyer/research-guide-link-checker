@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 from requests.exceptions import Timeout
+import pandas as pd
 
 all_nav_urls = ["https://guides.library.yale.edu/rdm_healthsci/home",
 "https://guides.library.yale.edu/rdm_healthsci/policies",
@@ -58,12 +59,15 @@ def pull_subpage_links():
                         if r.status_code == 200:
                             pass
                         else:
-                            print(href, 'AND THEN', url, 'AND THEN', a, 'AND THEN', r.status_code)
+                            #print(href, 'AND THEN', url, 'AND THEN', a, 'AND THEN', r.status_code)
+                            big_d[href] = {"base_guide_url": url, "guide_subpage_url": a, "http status": r.status_code}
                     except Timeout:
                         print(href, 'AND THEN', url, 'AND THEN', a, 'AND THEN', 'Timeout Error')
-
-
+                        big_d[href] = {"base_guide_url": url, "guide_subpage_url": a, "http status": "tim"}
 
 
 pull_subpage_links()
 
+print(big_d)
+df = pd.DataFrame.from_dict(big_d, orient='index')
+print(df)
