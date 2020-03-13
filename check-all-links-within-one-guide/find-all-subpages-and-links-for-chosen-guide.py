@@ -35,9 +35,6 @@ def clean_subpages():
         if i.startswith("https://guides.library.yale.edu/"):
             sub_page_links_list_clean.append(i)
 
-    for x in sub_page_links_list_clean:
-        print(x)
-
 
 def pull_subpage_links():
     for url in sub_page_links_list_clean:
@@ -62,17 +59,17 @@ def pull_subpage_links():
                         if r.status_code == 200:
                             pass
                         else:
-                            #print(href, 'AND THEN', url, 'AND THEN', a, 'AND THEN', r.status_code)
-                            big_d[href] = {"base_guide_url": url, "guide_subpage_url": a, "http status": r.status_code}
+                            big_d[href] = {"base_guide_url": research_guide_url, "guide_subpage_url": url, "http_status": r.status_code}
                     except Timeout:
-                        print(href, 'AND THEN', url, 'AND THEN', a, 'AND THEN', 'Timeout Error')
-                        big_d[href] = {"base_guide_url": url, "guide_subpage_url": a, "http status": "tim"}
+                        big_d[href] = {"base_guide_url": research_guide_url,
+                                                           "guide_subpage_url": url, "http_status": "timeout error"}
 
 
-pull_subpage_links()
 get_subpages()
 clean_subpages()
+pull_subpage_links()
 
-print(big_d)
 df = pd.DataFrame.from_dict(big_d, orient='index')
-print(df)
+pd.DataFrame.to_csv(df, "/Users/sn547/Documents/pycharm_projects/libguide-linkchecker/sample-output/output.csv")
+print(list(df.columns))
+print('done!')
