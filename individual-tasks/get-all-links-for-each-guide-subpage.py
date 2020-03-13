@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
+from requests.exceptions import Timeout
 
 all_nav_urls = ["https://guides.library.yale.edu/rdm_healthsci/home",
 "https://guides.library.yale.edu/rdm_healthsci/policies",
@@ -44,16 +45,23 @@ def pull_subpage_links():
         for a in nav_links:
             href = a.get('href')
             href_cleaned = []
-            if "guides.library.yale.edu" in href:
-                pass
-            elif type(href) == 'NoneType':
-                pass
-            elif "mailto:" in href:
-                pass
-            else:
-                print(href)
-            #r = requests.head(href)
-            #print(url, 'AND THEN', href, 'AND THEN', r.status_code)
+            if type(href) is str:
+                if "guides.library.yale.edu" in href:
+                    pass
+                elif type(href) == 'NoneType':
+                    pass
+                elif "mailto:" in href:
+                    pass
+                else:
+                    try:
+                        r = requests.head(href, timeout=10)
+                        if r.status_code == 200:
+                            pass
+                        else:
+                            print(href, 'AND THEN', url, 'AND THEN', a, 'AND THEN', r.status_code)
+                    except Timeout:
+                        print(href, 'AND THEN', url, 'AND THEN', a, 'AND THEN', 'Timeout Error')
+
 
 
 
